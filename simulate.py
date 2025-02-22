@@ -12,7 +12,6 @@ import matplotlib.animation as animation
 # Create a vector of times
 step = 0.01
 T = np.arange(start=0, stop=10, step=step)
-# print(T.shape)
 states = np.matrix(np.zeros((6, T.shape[0])))
 
 states[:, 0] = np.matrix(
@@ -27,7 +26,7 @@ states[:, 0] = np.matrix(
 )
 
 for i in range(0, T.shape[0] - 1):
-    states[:, i + 1] = rk4(pendulumDynamics, states[:, i], u=np.matrix(0), step=step)
+    states[:, i + 1] = rk4(pendulumDynamics, states[:, i], u=np.matrix(10), step=step)
 
 
 fig, ax = plt.subplots()
@@ -39,7 +38,7 @@ ax.set(
 
 
 def update_plot(frame):
-    frame = frame * 5
+    frame = frame * 2
     x = T[frame]
     y1 = states[0, frame]
     y2 = states[1, frame]
@@ -62,25 +61,6 @@ def update_plot(frame):
 
 
 ani = animation.FuncAnimation(
-    fig=fig, func=update_plot, frames=int(T.shape[0] / 5), interval=150
+    fig=fig, func=update_plot, frames=int(T.shape[0] / 2), interval=150
 )
 plt.show()
-
-
-# theta1s = np.unwrap(states[1,:])
-# theta2s = np.unwrap(states[2,:])
-
-# cart_pos = states[0,:]
-# theta1 = (theta1s[0,:]) % (2*np.pi)
-# theta2 = (theta2s[0,:]) % (2*np.pi)
-
-# plt.figure(1)
-# plt.plot(np.matrix(T).T,cart_pos.T)
-# plt.title("Cart Position")
-# plt.figure(2)
-# plt.plot(np.matrix(T).T,theta1.T)
-# plt.title("Theta 1")
-# plt.figure(3)
-# plt.plot(np.matrix(T).T,theta2.T)
-# plt.title("Theta 2")
-# plt.show()

@@ -1,7 +1,7 @@
 import numpy
 
 """
-Implementation of RK4 in pythono
+Implementation of RK4 in python
 """
 
 
@@ -12,7 +12,8 @@ def rk4(f, x: numpy.array, u: numpy.array, step: float) -> numpy.array:
     x - A vector of states
     step - Timestep for the ODE solver
 
-    Not included here is time. (assuming time invariant system)
+    Not included here is time, you have to figure out the step size and give it to the solver.
+    Assumes the dynamics in f() are time invariant for the time being...
     """
     f1 = f(x, u)
     # This will probably need fixing once I have a vector coming out of f(x,u)
