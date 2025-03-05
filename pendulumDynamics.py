@@ -44,6 +44,20 @@ def pendulumDynamics(x, u):
     L2 = PENDULUM_DATA.L2  # m
     g = PENDULUM_DATA.g  # g
 
+    # State Constraints:
+    # Not sure how to do these, the simulation goes a bit wacky when you just blindly set
+    # terms to zero. Which makes sense... Just have to figure out what order to zero them out in
+
+    # if x[0, 0] > PENDULUM_DATA.xlim_upper:
+    #     x[0, 0] = PENDULUM_DATA.xlim_upper
+    #     x[3,0] = 0
+    #     u = np.matrix(0)
+    # if x[0, 0] < PENDULUM_DATA.xlim_lower:
+    #     x[0, 0] = PENDULUM_DATA.xlim_lower
+    #     x[3,0] = 0
+    #     u = np.matrix(0)
+
+
     xc = x[0, 0]
     theta1 = x[1, 0]
     theta2 = x[2, 0]
@@ -117,11 +131,10 @@ def pendulumDynamics(x, u):
 
     x_dot = np.block([[x[3:, :]], [ddx]])
 
-    # State Constraints:
-    if x[0, 0] > PENDULUM_DATA.xlim_upper:
-        x[0, 0] = PENDULUM_DATA.xlim_upper
-    if x[0, 0] < PENDULUM_DATA.xlim_lower:
-        x[0, 0] = PENDULUM_DATA.xlim_lower
+    # More attempt at state constraints:
+    # if x[0,0] == PENDULUM_DATA.xlim_lower or x[0,0] == PENDULUM_DATA.xlim_upper:
+    #     x_dot[0,0] = 0 # Set velocity to zero
+    #     x_dot[3,0] = 0 # accel to zero
 
     return x_dot
 

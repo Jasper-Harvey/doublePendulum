@@ -26,7 +26,14 @@ states[:, 0] = np.matrix(
 )
 
 for i in range(0, T.shape[0] - 1):
-    states[:, i + 1] = rk4(pendulumDynamics, states[:, i], u=np.matrix(10), step=step)
+    # # State Constraints:
+    # if states[0, i] > PENDULUM_DATA.xlim_upper:
+    #     states[0, i] = PENDULUM_DATA.xlim_upper
+    #     states[3,i] = 0
+    # if states[0, i] < PENDULUM_DATA.xlim_lower:
+    #     states[0, i] = PENDULUM_DATA.xlim_lower
+    #     states[3,i] = 0
+    states[:, i + 1] = rk4(pendulumDynamics, states[:, i], u=np.matrix(1000), step=step)
 
 
 fig, ax = plt.subplots()
