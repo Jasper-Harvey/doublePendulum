@@ -5,35 +5,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-# Pendulum has 6 states
-# Numpy is row, col
-
-
 # Create a vector of times
 step = 0.01
 T = np.arange(start=0, stop=10, step=step)
 states = np.matrix(np.zeros((6, T.shape[0])))
 
+# Start upright:
 states[:, 0] = np.matrix(
     [
         [0],
         [0],
-        [np.pi + 0.7],
+        [0],
         [0],
         [0],
         [0],
     ]
 )
+u = np.matrix(0)
 
 for i in range(0, T.shape[0] - 1):
-    # # State Constraints:
-    # if states[0, i] > PENDULUM_DATA.xlim_upper:
-    #     states[0, i] = PENDULUM_DATA.xlim_upper
-    #     states[3,i] = 0
-    # if states[0, i] < PENDULUM_DATA.xlim_lower:
-    #     states[0, i] = PENDULUM_DATA.xlim_lower
-    #     states[3,i] = 0
-    states[:, i + 1] = rk4(pendulumDynamics, states[:, i], u=np.matrix(1000), step=step)
+
+    # Give it a kick:
+    if i < 3:
+        u[0,0] = 1
+    else: 
+        u[0,0] = 0
+    # Compute states
+    states[:, i + 1] = rk4(i,pendulumDynamics, states[:, i], u=u, step=step)
 
 
 fig, ax = plt.subplots()
@@ -42,7 +40,6 @@ ax.set(
     xlim=[-1, 1],
     ylim=[-1, 1],
 )
-
 
 def update_plot(frame):
     frame = frame * 2
