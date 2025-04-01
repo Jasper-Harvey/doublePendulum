@@ -22,7 +22,7 @@ PENDULUM_DATA.L2 = 0.4
 PENDULUM_DATA.g = 9.81
 
 
-def pendulumDynamics(x, u):
+def pendulumDynamics(t: float, x: np.matrix, u: np.matrix):
     """
     States for the dynamic equations are:
     x1 = x
@@ -43,20 +43,6 @@ def pendulumDynamics(x, u):
     L1 = PENDULUM_DATA.L1  # m
     L2 = PENDULUM_DATA.L2  # m
     g = PENDULUM_DATA.g  # g
-
-    # State Constraints:
-    # Not sure how to do these, the simulation goes a bit wacky when you just blindly set
-    # terms to zero. Which makes sense... Just have to figure out what order to zero them out in
-
-    # if x[0, 0] > PENDULUM_DATA.xlim_upper:
-    #     x[0, 0] = PENDULUM_DATA.xlim_upper
-    #     x[3,0] = 0
-    #     u = np.matrix(0)
-    # if x[0, 0] < PENDULUM_DATA.xlim_lower:
-    #     x[0, 0] = PENDULUM_DATA.xlim_lower
-    #     x[3,0] = 0
-    #     u = np.matrix(0)
-
 
     xc = x[0, 0]
     theta1 = x[1, 0]
@@ -131,11 +117,6 @@ def pendulumDynamics(x, u):
 
     x_dot = np.block([[x[3:, :]], [ddx]])
 
-    # More attempt at state constraints:
-    # if x[0,0] == PENDULUM_DATA.xlim_lower or x[0,0] == PENDULUM_DATA.xlim_upper:
-    #     x_dot[0,0] = 0 # Set velocity to zero
-    #     x_dot[3,0] = 0 # accel to zero
-
     return x_dot
 
 
@@ -143,5 +124,5 @@ if __name__ == "__main__":
     x0 = np.zeros((6, 1))
     x0[0, 0] = 0.1
     x0[4, 0] = 0.6
-    a = pendulumDynamics(x0, 0)
+    a = pendulumDynamics(0, x0, np.matrix(0))
     print(a)
