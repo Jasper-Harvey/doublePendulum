@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 # Create a vector of times
-step = 0.01
+step = 0.025
 T = np.arange(start=0, stop=10, step=step)
 states = np.matrix(np.zeros((6, T.shape[0])))
 

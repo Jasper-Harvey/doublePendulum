@@ -14,9 +14,9 @@ class Pendulum:
 
 
 PENDULUM_DATA = Pendulum()
-PENDULUM_DATA.mc = 0.4
-PENDULUM_DATA.m1 = 0.4
-PENDULUM_DATA.m2 = 0.4
+PENDULUM_DATA.mc = 0.1
+PENDULUM_DATA.m1 = 0.1
+PENDULUM_DATA.m2 = 0.1
 PENDULUM_DATA.L1 = 0.4
 PENDULUM_DATA.L2 = 0.4
 PENDULUM_DATA.g = 9.81
@@ -118,6 +118,51 @@ def pendulumDynamics(t: float, x: np.matrix, u: np.matrix):
     x_dot = np.block([[x[3:, :]], [ddx]])
 
     return x_dot
+
+
+def Ek(x):
+    # Calculate the kinetic energy based on the state x
+    mc = PENDULUM_DATA.mc  # kg
+    m1 = PENDULUM_DATA.m1  # kg
+    m2 = PENDULUM_DATA.m2  # kg
+    L1 = PENDULUM_DATA.L1  # m
+    L2 = PENDULUM_DATA.L2  # m
+    g = PENDULUM_DATA.g  # g
+
+    xc = x[0, 0]
+    theta1 = x[1, 0]
+    theta2 = x[2, 0]
+    xc_dot = x[3, 0]
+    theta1_dot = x[4, 0]
+    theta2_dot = x[5, 0]
+    
+    I1 = (1/12) * m1 * L1
+    I2 = (1/12) * m2 * L2
+    Ek = 0.5*mc*xc_dot**2 + 0.5*m1*xc_dot**2 + 0.5*(m1*(L1/2)**2 + I1)*theta1_dot**2 + \
+        m1*(L1/2)*xc_dot*theta1_dot*np.cos(theta1) + 0.5*m2*xc_dot**2 + 0.5*m2*(theta1_dot**2)*L1**2 + \
+        0.5*(m2*(L2/2)**2 + I2)*theta2_dot**2 + m2*L1*theta1_dot*xc_dot*np.cos(theta1) + \
+        m2*(L2/2)*theta2_dot*xc_dot*np.cos(theta2) + m2*L1*(L2/2)*theta1_dot*theta2_dot*np.cos(theta1 - theta2)
+    
+    return Ek
+
+def Ep(x):
+    # Calculate the kinetic energy based on the state x
+    m1 = PENDULUM_DATA.m1  # kg
+    m2 = PENDULUM_DATA.m2  # kg
+    L1 = PENDULUM_DATA.L1  # m
+    L2 = PENDULUM_DATA.L2  # m
+    g = PENDULUM_DATA.g  # g
+
+    theta1 = x[1, 0]
+    theta2 = x[2, 0]
+    
+    I1 = (1/12) * m1 * L1
+    I2 = (1/12) * m2 * L2
+    Ep = g*(m1*(L1/2) + m2*L1)*np.cos(theta1) + m2*g*(L2/2)*np.cos(theta2)
+
+    return Ep
+
+
 
 
 if __name__ == "__main__":

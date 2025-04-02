@@ -8,7 +8,7 @@ Implementation of RK4 in python
 def rk4(t: float, f: callable, x: numpy.matrix, u: numpy.matrix, step: float) -> numpy.matrix:
     """
     RK4 Algorithm
-    f - A function f(t, x, u) that maps the states, x, to the state derivates xdot.
+    f - A function f(t, x,t) that maps the states, x, to the state derivates xdot.
     x - A vector of states
     step - Timestep for the ODE solver
 
